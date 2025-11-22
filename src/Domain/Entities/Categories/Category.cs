@@ -1,7 +1,7 @@
 ﻿using WordBattle.Domain.Errors;
 using WordBattle.Domain.Shared;
 
-namespace WordBattle.Domain.Entities
+namespace WordBattle.Domain.Entities.Categories
 {
     public class Category : Entity
     {

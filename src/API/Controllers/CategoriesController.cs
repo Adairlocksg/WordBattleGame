@@ -1,15 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WordBattle.API.Controllers.Abstractions;
+using WordBattle.Application.Abstractions.Messaging;
+using WordBattle.Application.UseCases.Categories.CreateCategory;
 
 namespace WordBattle.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController(ICommandHandler<CreateCategoryCommand, Guid> createCategoryUseCase) : ApiController
     {
-        [HttpGet]
-        public async Task<IActionResult> Create()
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command, CancellationToken cancellationToken = default)
         {
-            return Ok();
+            return await HandleResult(async () => await createCategoryUseCase.HandleAsync(command, cancellationToken));
         }
     }
 }

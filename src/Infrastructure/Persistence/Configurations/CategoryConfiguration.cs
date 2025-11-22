@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using WordBattle.Domain.Entities;
+using WordBattle.Domain.Entities.Categories;
 using WordBattle.Infrastructure.Persistence.Configurations.Base;
 
 namespace WordBattle.Infrastructure.Persistence.Configurations

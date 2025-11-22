@@ -1,6 +1,6 @@
 @WordBattle.API_HostAddress = http://localhost:5278
 
-GET {{WordBattle.API_HostAddress}}/weatherforecast/
+GET {{WordBattle.API_HostAddress}}/api/categories/
 Accept: application/json
 
 ###
