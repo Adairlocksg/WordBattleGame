@@ -1,19 +1,21 @@
-﻿using WordBattle.Domain.Entities.Categories;
+﻿using Microsoft.EntityFrameworkCore;
+using WordBattle.Domain.Entities.Categories;
 using WordBattle.Infrastructure.Persistence;
 
 namespace WordBattle.Infrastructure.Repositories
 {
     public class CategoryRepository(WordBattleDbContext dbContext) : ICategoryRepository
     {
-        public Task AddAsync(Category category, CancellationToken cancellationToken = default)
+        private readonly DbSet<Category> DbSet = dbContext.Set<Category>();
+
+        public async Task AddAsync(Category category, CancellationToken cancellationToken = default)
         {
-            dbContext.Categories.Add(category);
-            return Task.CompletedTask;
+            await DbSet.AddAsync(category, cancellationToken);
         }
 
         public IQueryable<Category> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return dbContext.Categories.AsQueryable();
+            return DbSet.Where(x => x.Active);
         }
 
         public Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -21,10 +23,9 @@ namespace WordBattle.Infrastructure.Repositories
             return dbContext.Categories.FindAsync([id], cancellationToken).AsTask();
         }
 
-        public Task RemoveAsync(Category category, CancellationToken cancellationToken = default)
+        public Task<Category?> GetRandomAsync(CancellationToken cancellationToken = default)
         {
-            dbContext.Categories.Remove(category);
-            return Task.CompletedTask;
+            return DbSet.OrderBy(x => Guid.NewGuid()).FirstOrDefaultAsync(x => x.Active, cancellationToken);
         }
     }
 }

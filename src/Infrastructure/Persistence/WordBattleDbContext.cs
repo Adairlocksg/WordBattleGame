@@ -1,12 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WordBattle.Domain.Entities;
 using WordBattle.Domain.Entities.Categories;
+using WordBattle.Domain.Entities.Games;
+using WordBattle.Domain.Entities.Games.Players;
+using WordBattle.Domain.Entities.Games.Rounds;
+using WordBattle.Domain.Entities.Games.Rounds.Answers;
 
 namespace WordBattle.Infrastructure.Persistence;
 
 public class WordBattleDbContext(DbContextOptions<WordBattleDbContext> options) : DbContext(options)
 {
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Game> Games { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Round> Rounds { get; set; }
+    public DbSet<Answer> Answers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

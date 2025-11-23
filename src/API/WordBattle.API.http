@@ -1,6 +1,117 @@
-@WordBattle.API_HostAddress = http://localhost:5278
+@HostAddress = http://localhost:5278
+@ContentType = application/json
 
-GET {{WordBattle.API_HostAddress}}/api/categories/
-Accept: application/json
+# ==========================================
+# 1. SETUP: CRIAR CATEGORIAS
+# ==========================================
 
-###
+### Criar Categoria 1
+POST {{HostAddress}}/api/categories
+Content-Type: {{ContentType}}
+
+{
+  "description": "Animais"
+}
+
+### Criar Categoria 2
+POST {{HostAddress}}/api/categories
+Content-Type: {{ContentType}}
+
+{
+  "description": "Países"
+}
+
+### Listar Categorias (Para conferir se criou)
+GET {{HostAddress}}/api/categories
+Accept: {{ContentType}}
+
+
+# ==========================================
+# 2. LOBBY: CRIAR JOGO E JOGADORES
+# ==========================================
+
+### 1. Criar o Jogo (Lobby)
+# @name createGameRequest
+POST {{HostAddress}}/api/games
+Content-Type: {{ContentType}}
+
+// O corpo é vazio pois é um comando sem propriedades
+{}
+
+// CAPTURA DO ID DO JOGO
+@gameId = {{createGameRequest.response.body.data}}
+
+
+### 2. Adicionar Jogador 1 (Alice)
+# @name addPlayer1Request
+POST {{HostAddress}}/api/games/{{gameId}}/players
+Content-Type: {{ContentType}}
+
+{
+  "name": "Alice"
+}
+
+// CAPTURA DO ID DO PLAYER 1
+@player1Id = {{addPlayer1Request.response.body.data}}
+
+
+### 3. Adicionar Jogador 2 (Bob)
+# @name addPlayer2Request
+POST {{HostAddress}}/api/games/{{gameId}}/players
+Content-Type: {{ContentType}}
+
+{
+  "name": "Bob"
+}
+
+// CAPTURA DO ID DO PLAYER 2
+@player2Id = {{addPlayer2Request.response.body.data}}
+
+
+# ==========================================
+# 3. GAMEPLAY: INICIAR E JOGAR
+# ==========================================
+
+### 4. Iniciar a Partida (Trava entrada de novos jogadores)
+PATCH {{HostAddress}}/api/games/{{gameId}}/start
+Content-Type: {{ContentType}}
+
+{}
+
+
+### 5. Iniciar Rodada (Girar Roleta)
+# O Backend escolhe uma categoria aleatória das que criamos no passo 1
+POST {{HostAddress}}/api/games/{{gameId}}/rounds
+Content-Type: {{ContentType}}
+
+{}
+
+
+### 6. Jogador 1 Responde (Caminho Feliz)
+POST {{HostAddress}}/api/games/{{gameId}}/answers
+Content-Type: {{ContentType}}
+
+{
+  "playerId": "{{player1Id}}",
+  "word": "Cachorro"
+}
+
+
+### 7. Jogador 2 Responde (Caminho Feliz - Fecha o Round)
+POST {{HostAddress}}/api/games/{{gameId}}/answers
+Content-Type: {{ContentType}}
+
+{
+  "playerId": "{{player2Id}}",
+  "word": "Gato"
+}
+
+# ==========================================
+# 4. PRÓXIMA RODADA (LOOP)
+# ==========================================
+
+### 8. Iniciar Segunda Rodada
+POST {{HostAddress}}/api/games/{{gameId}}/rounds
+Content-Type: {{ContentType}}
+
+{}

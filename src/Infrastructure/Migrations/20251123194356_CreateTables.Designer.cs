@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WordBattle.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using WordBattle.Infrastructure.Persistence;
 namespace WordBattle.Infrastructure.Migrations
 {
     [DbContext(typeof(WordBattleDbContext))]
-    partial class WordBattleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251123194356_CreateTables")]
+    partial class CreateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

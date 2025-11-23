@@ -17,6 +17,11 @@ namespace WordBattle.Infrastructure.Persistence.Configurations
                 .HasColumnName("description")
                 .HasMaxLength(200)
                 .IsRequired();
+
+            builder.Property(x => x.Active)
+                .HasColumnName("active")
+                .IsRequired()
+                .HasDefaultValue(true);
         }
     }
 }

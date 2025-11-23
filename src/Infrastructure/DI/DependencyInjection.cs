@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WordBattle.Domain.Entities.Categories;
+using WordBattle.Domain.Entities.Games;
 using WordBattle.Infrastructure.Persistence;
 using WordBattle.Infrastructure.Repositories;
 
@@ -17,6 +18,7 @@ namespace WordBattle.Infrastructure.DI
                 options.UseNpgsql(connectionString));
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IGameRepository, GameRepository>();
 
             return services;
         }

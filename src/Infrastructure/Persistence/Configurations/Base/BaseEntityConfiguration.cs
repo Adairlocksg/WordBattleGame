@@ -12,6 +12,7 @@ namespace WordBattle.Infrastructure.Persistence.Configurations.Base
 
             builder.Property(x => x.Id)
                 .HasColumnName("id")
+                .ValueGeneratedNever()
                 .IsRequired();
 
             builder.Property(x => x.CreatedAt)

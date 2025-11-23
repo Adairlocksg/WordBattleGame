@@ -3,17 +3,17 @@ using WordBattle.Application.Abstractions.UoW;
 using WordBattle.Domain.Entities.Categories;
 using WordBattle.Domain.Shared;
 
-namespace WordBattle.Application.UseCases.Categories.RemoveCategory
+namespace WordBattle.Application.UseCases.Categories.InactivateCategory
 {
-    public class RemoveCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository) : ICommandHandler<RemoveCategoryCommand, Guid>
+    public class InactivateCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository) : ICommandHandler<InactivateCategoryCommand, Guid>
     {
-        public async Task<Result<Guid>> HandleAsync(RemoveCategoryCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> HandleAsync(InactivateCategoryCommand command, CancellationToken cancellationToken)
         {
             var category = await categoryRepository.GetByIdAsync(command.Id, cancellationToken);
             if (category is null)
                 return Result.Failure<Guid>(Error.NotFound);
 
-            await categoryRepository.RemoveAsync(category, cancellationToken);
+            category.Inactivate();
 
             await unitOfWork.CommitAsync(cancellationToken);
 

@@ -10,6 +10,7 @@ namespace WordBattle.Domain.Entities.Categories
         private Category(string description)
         {
             Description = description;
+            Active = true;
         }
 
         public static Result<Category> Create(string description)
@@ -26,6 +27,10 @@ namespace WordBattle.Domain.Entities.Categories
             return new Category(description);
         }
 
+        public void Inactivate() => Active = false;
+        
+
         public string Description { get; private set; }
+        public bool Active { get; private set; }
     }
 }
